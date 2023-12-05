@@ -17,39 +17,44 @@ from streamlit.logger import get_logger
 
 LOGGER = get_logger(__name__)
 
-def generate_explanation(question):
+import pandas as pd
+
+# Function to generate explanation (placeholder for your implementation)
+def generate_explanation(question, people):
     # Your code goes here
     # Replace this line with your explanation generation logic
-    return "Explanation for: " + question
+    return f"Explanation for: {question}, tailored for {', '.join([person['name'] for person in people])}"
 
-def run():
-    st.set_page_config(
-        page_title="Hello",
-        page_icon="👋",
-    )
-    
-    # App title
-    st.title("Family-Friendly Explanation Generator")
+# App title
+st.title("Family-Friendly Explanation Generator")
 
-    # Collect user information
-    name = st.text_input("Enter your name:")
-    age = st.number_input("Enter your age:", min_value=0, max_value=120)
+# Initialize session state for the table
+if 'people_table' not in st.session_state:
+    st.session_state.people_table = pd.DataFrame(columns=['name', 'age'])
 
-    # Check if the name and age are provided
-    if name and age:
-        # Collect the question
-        question = st.text_area("What would you like to explain?")
+# Function to add a new person to the table
+def add_person():
+    st.session_state.people_table = st.session_state.people_table.append({'name': new_name, 'age': new_age}, ignore_index=True)
 
-        if question:
-            # Call the function to generate an explanation
-            explanation = generate_explanation(question)
+# Input fields to add new person
+new_name = st.text_input("Enter name:")
+new_age = st.number_input("Enter age:", min_value=0, max_value=120, step=1)
 
-            # Display the explanation
-            st.write("Here's an explanation suitable for someone named", name, "who is", age, "years old:")
-            st.write(explanation)
-    else:
-        st.write("Please enter your name and age to continue.")
+# Button to add the person to the table
+if st.button("Add Person"):
+    if new_name and new_age:
+        add_person()
 
+# Display the table and allow selection of people
+st.write("People to Explain to:")
+selected_indices = st.multiselect("Select people:", st.session_state.people_table.index, format_func=lambda x: st.session_state.people_table.loc[x, 'name'])
+selected_people = st.session_state.people_table.loc[selected_indices]
 
-if __name__ == "__main__":
-    run()
+# Collect the question
+question = st.text_area("What would you like to explain?")
+
+# Display the explanation
+if question and not selected_people.empty:
+    explanation = generate_explanation(question, selected_people.to_dict('records'))
+    st.write("Explanation:")
+    st.write(explanation)
