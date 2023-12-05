@@ -39,13 +39,13 @@ def run():
   new_age = st.number_input("Enter age:", min_value=0, max_value=120, step=1)
 
   # Function to add a new person to the table
-  def add_person():
-    st.session_state.people_table[-1] = [new_name, new_age]
+  def add_person(name, age):
+    st.session_state.people_table[-1] = [name, age]
 
   # Button to add the person to the table
   if st.button("Add Person"):
       if new_name and new_age:
-          add_person()
+          add_person(new_name, new_age)
 
   # Display the table and allow selection of people
   st.write("People to Explain to:")
