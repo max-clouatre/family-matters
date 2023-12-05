@@ -14,11 +14,9 @@
 
 import streamlit as st
 from streamlit.logger import get_logger
-
-LOGGER = get_logger(__name__)
-
 import pandas as pd
 
+LOGGER = get_logger(__name__)
 
 # Function to generate explanation (placeholder for your implementation)
 def generate_explanation(question, people):
@@ -30,36 +28,5 @@ def run():
   # App title
   st.title("Family Matters")
 
-  # Initialize session state for the table
-  if 'people_table' not in st.session_state:
-      st.session_state.people_table = pd.DataFrame(columns=['name', 'age'])
-
-  # Function to add a new person to the table
-  def add_person():
-      st.session_state.people_table = st.session_state.people_table.append({'name': new_name, 'age': new_age}, ignore_index=True)
-
-  # Input fields to add new person
-  new_name = st.text_input("Enter name:")
-  new_age = st.number_input("Enter age:", min_value=0, max_value=120, step=1)
-
-  # Button to add the person to the table
-  if st.button("Add Person"):
-      if new_name and new_age:
-          add_person()
-
-  # Display the table and allow selection of people
-  st.write("People to Explain to:")
-  selected_indices = st.multiselect("Select people:", st.session_state.people_table.index, format_func=lambda x: st.session_state.people_table.loc[x, 'name'])
-  selected_people = st.session_state.people_table.loc[selected_indices]
-
-  # Collect the question
-  question = st.text_area("What would you like to explain?")
-
-  # Display the explanation
-  if question and not selected_people.empty:
-      explanation = generate_explanation(question, selected_people.to_dict('records'))
-      st.write("Explanation:")
-      st.write(explanation)
-
-  if __name__ == "__main__":
-    run()
+if __name__ == "__main__":
+  run()
