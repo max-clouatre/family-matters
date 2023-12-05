@@ -17,34 +17,38 @@ from streamlit.logger import get_logger
 
 LOGGER = get_logger(__name__)
 
+def generate_explanation(question):
+    # Your code goes here
+    # Replace this line with your explanation generation logic
+    return "Explanation for: " + question
 
 def run():
     st.set_page_config(
         page_title="Hello",
         page_icon="👋",
     )
+    
+    # App title
+    st.title("Family-Friendly Explanation Generator")
 
-    st.write("# Welcome to Streamlit! 👋")
+    # Collect user information
+    name = st.text_input("Enter your name:")
+    age = st.number_input("Enter your age:", min_value=0, max_value=120)
 
-    st.sidebar.success("Select a demo above.")
+    # Check if the name and age are provided
+    if name and age:
+        # Collect the question
+        question = st.text_area("What would you like to explain?")
 
-    st.markdown(
-        """
-        Streamlit is an open-source app framework built specifically for
-        Machine Learning and Data Science projects.
-        **👈 Select a demo from the sidebar** to see some examples
-        of what Streamlit can do!
-        ### Want to learn more?
-        - Check out [streamlit.io](https://streamlit.io)
-        - Jump into our [documentation](https://docs.streamlit.io)
-        - Ask a question in our [community
-          forums](https://discuss.streamlit.io)
-        ### See more complex demos
-        - Use a neural net to [analyze the Udacity Self-driving Car Image
-          Dataset](https://github.com/streamlit/demo-self-driving)
-        - Explore a [New York City rideshare dataset](https://github.com/streamlit/demo-uber-nyc-pickups)
-    """
-    )
+        if question:
+            # Call the function to generate an explanation
+            explanation = generate_explanation(question)
+
+            # Display the explanation
+            st.write("Here's an explanation suitable for someone named", name, "who is", age, "years old:")
+            st.write(explanation)
+    else:
+        st.write("Please enter your name and age to continue.")
 
 
 if __name__ == "__main__":
