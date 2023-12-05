@@ -32,15 +32,15 @@ def run():
   if 'people_table' not in st.session_state:
       st.session_state.people_table = pd.DataFrame(columns=['name', 'age'])
 
-  # Function to add a new person to the table
-  def add_person():
-    # add person to table
-    st.session_state.people_table[-1] = [new_name, new_age]
 
 
   # Input fields to add new person
   new_name = st.text_input("Enter name:")
   new_age = st.number_input("Enter age:", min_value=0, max_value=120, step=1)
+
+  # Function to add a new person to the table
+  def add_person():
+    st.session_state.people_table[-1] = [new_name, new_age]
 
   # Button to add the person to the table
   if st.button("Add Person"):
