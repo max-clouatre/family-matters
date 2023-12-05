@@ -34,7 +34,9 @@ def run():
 
   # Function to add a new person to the table
   def add_person():
-      st.session_state.people_table = st.session_state.people_table.append({'name': new_name, 'age': new_age}, ignore_index=True)
+    # add person to table
+    st.session_state.people_table[-1] = {'name': new_name, 'age': new_age} 
+
 
   # Input fields to add new person
   new_name = st.text_input("Enter name:")
